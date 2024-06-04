@@ -35,12 +35,10 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-
-      - name: Build and analyze
+ - name: Build and analyze
+     working-directory: card-system-service  # Specify the working directory
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: http://your-sonarqube-server-url:9000  # Add this line if you're using a self-hosted SonarQube
-        run: |
-          mvn -f card-system-service  # Change to the directory containing your pom.xml
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=AlanoudAlarabid_UAE-Travel-Card-Management-System
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=AlanoudAlarabid_UAE-Travel-Card-Management-System
